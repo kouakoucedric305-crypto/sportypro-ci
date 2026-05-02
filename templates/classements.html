@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% block title %}Classements en direct — SportyPro CI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>🏆 Classements en temps réel</h1>
+  <p class="subtitle">Mis à jour toutes les heures · Saison 2025/2026</p>
+  <span class="update-time" id="lastUpdate">Dernière mise à jour : {{ now.strftime('%H:%M') }}</span>
+</div>
+
+<!-- Onglets ligues -->
+<div class="league-tabs" id="leagueTabs">
+  {% for item in standings_data %}
+  <button class="tab-btn {% if loop.first %}active{% endif %}"
+          onclick="showTab('{{ item.league.id }}')"
+          id="tab-{{ item.league.id }}">
+    <img src="{{ item.league.logo }}" alt="" class="tab-logo" onerror="this.style.display='none'">
+    {{ item.league.name }}
+  </button>
+  {% endfor %}
+</div>
+
+<!-- Tableaux de classement -->
+{% for item in standings_data %}
+<div class="standings-panel {% if not loop.first %}hidden{% endif %}" id="panel-{{ item.league.id }}">
+  <div class="standings-header">
+    <img src="{{ item.league.logo }}" alt="" class="league-logo-big" onerror="this.style.display='none'">
+    <div>
+      <h2>{{ item.league.name }}</h2>
+      <span class="country-badge">{{ item.league.country }}</span>
+    </div>
+    <button class="refresh-btn" onclick="refreshStandings('{{ item.league.id }}')">🔄 Actualiser</button>
+  </div>
+
+  <div class="table-wrap" id="table-{{ item.league.id }}">
+    <table class="standings-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th class="team-col">Équipe</th>
+          <th title="Matchs joués">MJ</th>
+          <th title="Victoires">V</th>
+          <th title="Nuls">N</th>
+          <th title="Défaites">D</th>
+          <th title="Buts pour">BP</th>
+          <th title="Buts contre">BC</th>
+          <th title="Différence de buts">DB</th>
+          <th title="Points" class="pts-col">Pts</th>
+          <th title="Forme récente">Forme</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in item.table %}
+        <tr class="
+          {% if loop.index <= 4 %}zone-cl{% elif loop.index == 5 %}zone-el{% elif loop.index >= (item.table|length - 2) %}zone-rel{% endif %}
+        ">
+          <td class="pos-cell">
+            <span class="pos-num">{{ row.position }}</span>
+          </td>
+          <td class="team-cell">
+            <img src="{{ row.team.crest }}" alt="" class="team-crest" onerror="this.style.display='none'">
+            <span class="team-name">{{ row.team.shortName or row.team.name }}</span>
+          </td>
+          <td>{{ row.playedGames }}</td>
+          <td class="win">{{ row.won }}</td>
+          <td>{{ row.draw }}</td>
+          <td class="loss">{{ row.lost }}</td>
+          <td>{{ row.goalsFor }}</td>
+          <td>{{ row.goalsAgainst }}</td>
+          <td class="{% if row.goalDifference > 0 %}pos-diff{% elif row.goalDifference < 0 %}neg-diff{% endif %}">
+            {{ '+' if row.goalDifference > 0 else '' }}{{ row.goalDifference }}
+          </td>
+          <td class="pts-cell"><strong>{{ row.points }}</strong></td>
+          <td class="form-cell">
+            {% if row.form %}
+              {% for r in row.form.split(',')[-5:] %}
+                <span class="form-dot form-{{ r }}">{{ r }}</span>
+              {% endfor %}
+            {% else %}—{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item zone-cl-dot">■ Ligue des Champions</span>
+    <span class="legend-item zone-el-dot">■ Europa League</span>
+    <span class="legend-item zone-rel-dot">■ Relégation</span>
+  </div>
+</div>
+{% endfor %}
+
+<style>
+.page-header { text-align:center; padding: 2rem 0 1rem; }
+.page-header h1 { font-size:2rem; margin:0; }
+.subtitle { color: var(--text-secondary, #aaa); margin:.5rem 0; }
+.update-time { font-size:.8rem; color:#666; display:block; margin-top:.5rem; }
+
+.league-tabs { display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center; margin:1.5rem 0; padding: 0 1rem; }
+.tab-btn {
+  display:flex; align-items:center; gap:.5rem;
+  padding:.6rem 1.2rem; border:2px solid #333; border-radius:2rem;
+  background:#1a1a1a; color:#ccc; cursor:pointer; font-size:.9rem;
+  transition: all .2s;
+}
+.tab-btn:hover { border-color:#00e676; color:#fff; }
+.tab-btn.active { border-color:#00e676; background:#00e67620; color:#00e676; font-weight:bold; }
+.tab-logo { width:20px; height:20px; object-fit:contain; }
+
+.standings-panel { max-width:900px; margin:0 auto 2rem; padding: 0 1rem; }
+.standings-panel.hidden { display:none; }
+
+.standings-header {
+  display:flex; align-items:center; gap:1rem;
+  background:#1a1a1a; border-radius:12px; padding:1rem 1.5rem;
+  margin-bottom:1rem; border:1px solid #2a2a2a;
+}
+.league-logo-big { width:48px; height:48px; object-fit:contain; }
+.standings-header h2 { margin:0; font-size:1.3rem; }
+.country-badge { font-size:.85rem; color:#aaa; }
+.refresh-btn {
+  margin-left:auto; padding:.5rem 1rem; border:1px solid #00e676;
+  background:transparent; color:#00e676; border-radius:8px; cursor:pointer;
+  font-size:.85rem; transition: all .2s;
+}
+.refresh-btn:hover { background:#00e67620; }
+
+.table-wrap { overflow-x:auto; }
+.standings-table { width:100%; border-collapse:collapse; font-size:.9rem; }
+.standings-table th {
+  background:#111; color:#888; padding:.6rem .5rem;
+  text-align:center; font-weight:600; font-size:.8rem;
+  border-bottom:2px solid #222; white-space:nowrap;
+}
+.standings-table td { padding:.55rem .5rem; text-align:center; border-bottom:1px solid #1a1a1a; }
+.standings-table tr:hover td { background:#ffffff08; }
+
+.team-col { text-align:left !important; min-width:160px; }
+.team-cell { display:flex; align-items:center; gap:.6rem; text-align:left; }
+.team-crest { width:22px; height:22px; object-fit:contain; flex-shrink:0; }
+.team-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px; }
+
+.pos-num { font-weight:bold; }
+.pts-col { font-size:1rem; }
+.pts-cell { font-size:1.05rem; }
+
+.win  { color:#00e676; }
+.loss { color:#ff1744; }
+.pos-diff { color:#00e676; }
+.neg-diff { color:#ff1744; }
+
+/* Zones colorées */
+.zone-cl td:first-child { border-left:3px solid #1565c0; }
+.zone-el td:first-child { border-left:3px solid #e65100; }
+.zone-rel td:first-child { border-left:3px solid #b71c1c; }
+
+.form-cell { display:flex; gap:2px; justify-content:center; flex-wrap:wrap; }
+.form-dot {
+  width:20px; height:20px; border-radius:50%;
+  font-size:.65rem; font-weight:bold;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.form-W { background:#00e676; color:#000; }
+.form-D { background:#ffc107; color:#000; }
+.form-L { background:#ff1744; color:#fff; }
+
+.legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:.8rem; color:#888; margin-top:.8rem; padding:.5rem 0; }
+.zone-cl-dot { color:#1565c0; }
+.zone-el-dot { color:#e65100; }
+.zone-rel-dot { color:#b71c1c; }
+</style>
+
+<script>
+function showTab(leagueId) {
+  document.querySelectorAll('.standings-panel').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + leagueId).classList.remove('hidden');
+  document.getElementById('tab-' + leagueId).classList.add('active');
+}
+
+function refreshStandings(leagueId) {
+  const btn = document.querySelector('#panel-' + leagueId + ' .refresh-btn');
+  btn.textContent = '⏳ Chargement...';
+  fetch('/api/standings/' + leagueId)
+    .then(r => r.json())
+    .then(data => {
+      renderTable(leagueId, data.table);
+      document.getElementById('lastUpdate').textContent = 'Dernière mise à jour : ' + data.updated;
+      btn.textContent = '🔄 Actualiser';
+    })
+    .catch(() => { btn.textContent = '🔄 Actualiser'; });
+}
+
+function renderTable(leagueId, table) {
+  const tbody = document.querySelector('#table-' + leagueId + ' tbody');
+  if (!tbody || !table.length) return;
+  const n = table.length;
+  tbody.innerHTML = table.map((row, i) => {
+    const pos = i + 1;
+    const zoneClass = pos <= 4 ? 'zone-cl' : pos === 5 ? 'zone-el' : pos >= n - 2 ? 'zone-rel' : '';
+    const diff = row.goalDifference;
+    const diffClass = diff > 0 ? 'pos-diff' : diff < 0 ? 'neg-diff' : '';
+    const form = (row.form || '').split(',').slice(-5).map(r =>
+      `<span class="form-dot form-${r}">${r}</span>`
+    ).join('');
+    return `<tr class="${zoneClass}">
+      <td class="pos-cell"><span class="pos-num">${pos}</span></td>
+      <td class="team-cell">
+        <img src="${row.team.crest}" alt="" class="team-crest" onerror="this.style.display='none'">
+        <span class="team-name">${row.team.shortName || row.team.name}</span>
+      </td>
+      <td>${row.playedGames}</td>
+      <td class="win">${row.won}</td>
+      <td>${row.draw}</td>
+      <td class="loss">${row.lost}</td>
+      <td>${row.goalsFor}</td>
+      <td>${row.goalsAgainst}</td>
+      <td class="${diffClass}">${diff > 0 ? '+' : ''}${diff}</td>
+      <td class="pts-cell"><strong>${row.points}</strong></td>
+      <td class="form-cell">${form || '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// Auto-refresh classement toutes les 5 minutes
+setInterval(() => {
+  const activePanel = document.querySelector('.standings-panel:not(.hidden)');
+  if (activePanel) {
+    const lid = activePanel.id.replace('panel-', '');
+    fetch('/api/standings/' + lid)
+      .then(r => r.json())
+      .then(data => {
+        renderTable(lid, data.table);
+        document.getElementById('lastUpdate').textContent = 'Dernière mise à jour : ' + data.updated;
+      });
+  }
+}, 5 * 60 * 1000);
+</script>
+{% endblock %}
