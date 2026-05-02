@@ -1,0 +1,48 @@
+<!-- ================================================================
+  SNIPPET 1 — Colle ce bloc JS dans sport.html ET index.html
+  juste avant </body>
+  Il rafraîchit la page toutes les 60 secondes UNIQUEMENT
+  si has_live=True (match en cours), sinon rien.
+================================================================ -->
+
+{% if has_live %}
+<div class="live-banner" id="liveBanner">
+  🔴 LIVE — Scores mis à jour en direct · Prochain rafraîchissement dans <span id="countdown">60</span>s
+</div>
+<script>
+(function() {
+  var seconds = 60;
+  var cd = document.getElementById('countdown');
+  var interval = setInterval(function() {
+    seconds--;
+    if (cd) cd.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(interval);
+      window.location.reload();
+    }
+  }, 1000);
+})();
+</script>
+<style>
+.live-banner {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #b71c1c; color: #fff;
+  text-align: center; padding: .6rem 1rem;
+  font-size: .9rem; font-weight: bold;
+  z-index: 9999; animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .8; }
+}
+</style>
+{% endif %}
+
+
+<!-- ================================================================
+  SNIPPET 2 — Ajoute ce lien dans la navbar de base.html
+  (dans la liste des liens de navigation)
+  Cherche la ligne avec "Résultats" et ajoute juste après :
+================================================================ -->
+
+<a href="/classements">🏆 Classements</a>
