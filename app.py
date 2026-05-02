@@ -190,14 +190,33 @@ def get_next_events(sport_key, league, n=10):
     """Vrais matchs via API-Sports — fallback automatique si API vide/quota épuisé."""
     lid = league["id"]
     sea = league.get("season", "2025")
+    today = datetime.now().strftime("%Y-%m-%d")
+    # Chercher les matchs sur les 30 prochains jours
+    from datetime import timedelta
+    future = (datetime.now() + timedelta(days=30)).strftime("%Y-%m-%d")
 
     if sport_key == "football":
+        # Essai 1 : avec "next"
         data = _cached_get(f"{FOOTBALL_API}/fixtures",
                            params={"league": lid, "season": sea, "next": n},
                            headers=HEADERS)
         raw = data.get("response", [])
+        if not raw:
+            # Essai 2 : avec plage de dates from/to
+            data = _cached_get(f"{FOOTBALL_API}/fixtures",
+                               params={"league": lid, "season": sea, "from": today, "to": future},
+                               headers=HEADERS)
+            raw = data.get("response", [])
+        if not raw:
+            # Essai 3 : toute la saison (sans filtre de date)
+            data = _cached_get(f"{FOOTBALL_API}/fixtures",
+                               params={"league": lid, "season": sea},
+                               headers=HEADERS)
+            raw = data.get("response", [])
+            # Filtrer les matchs futurs
+            raw = [f for f in raw if f.get("fixture", {}).get("date", "") >= today]
         if raw:
-            return [_football_fixture_to_event(f, league["name"]) for f in raw]
+            return [_football_fixture_to_event(f, league["name"]) for f in raw[:n]]
         # Fallback : filtrer par ligue ou retourner tout
         fb = [ev for ev in FALLBACK_EVENTS["football"]
               if league["name"].lower() in ev.get("strLeague","").lower()
@@ -205,12 +224,26 @@ def get_next_events(sport_key, league, n=10):
         return fb[:n] if fb else FALLBACK_EVENTS["football"][:n]
 
     if sport_key == "basketball":
+        # Essai 1 : avec "next"
         data = _cached_get(f"{BASKETBALL_API}/games",
                            params={"league": lid, "season": sea, "next": n},
                            headers=HEADERS)
         raw = data.get("response", [])
+        if not raw:
+            # Essai 2 : avec plage de dates
+            data = _cached_get(f"{BASKETBALL_API}/games",
+                               params={"league": lid, "season": sea, "date": today},
+                               headers=HEADERS)
+            raw = data.get("response", [])
+        if not raw:
+            # Essai 3 : toute la saison
+            data = _cached_get(f"{BASKETBALL_API}/games",
+                               params={"league": lid, "season": sea},
+                               headers=HEADERS)
+            raw = data.get("response", [])
+            raw = [g for g in raw if g.get("date", "") >= today]
         if raw:
-            return [_basketball_game_to_event(g, league["name"]) for g in raw]
+            return [_basketball_game_to_event(g, league["name"]) for g in raw[:n]]
         return FALLBACK_EVENTS["basketball"][:n]
 
     return FALLBACK_EVENTS.get(sport_key, [])[:n]
@@ -342,6 +375,58 @@ def resultats():
 def api_status():
     data = _cached_get(f"{FOOTBALL_API}/status", headers=HEADERS)
     return jsonify(data)
+
+@app.route("/api/debug")
+def api_debug():
+    """Diagnostic complet : teste chaque méthode d'appel API pour trouver laquelle marche."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    from datetime import timedelta
+    future = (datetime.now() + timedelta(days=14)).strftime("%Y-%m-%d")
+    results = {}
+
+    # Test 1 : status
+    results["status"] = _cached_get(f"{FOOTBALL_API}/status", headers=HEADERS)
+
+    # Test 2 : fixtures avec "next"
+    d = requests.get(f"{FOOTBALL_API}/fixtures",
+                     params={"league": "39", "season": "2025", "next": 5},
+                     headers=HEADERS, timeout=12)
+    r2 = d.json()
+    results["fixtures_next"] = {"params_used": "league=39&season=2025&next=5",
+                                 "count": len(r2.get("response", [])),
+                                 "errors": r2.get("errors", []),
+                                 "sample": r2.get("response", [])[:1]}
+
+    # Test 3 : fixtures avec from/to
+    d = requests.get(f"{FOOTBALL_API}/fixtures",
+                     params={"league": "39", "season": "2025", "from": today, "to": future},
+                     headers=HEADERS, timeout=12)
+    r3 = d.json()
+    results["fixtures_from_to"] = {"params_used": f"league=39&season=2025&from={today}&to={future}",
+                                    "count": len(r3.get("response", [])),
+                                    "errors": r3.get("errors", []),
+                                    "sample": r3.get("response", [])[:1]}
+
+    # Test 4 : fixtures saison entière (sans filtre date)
+    d = requests.get(f"{FOOTBALL_API}/fixtures",
+                     params={"league": "39", "season": "2025"},
+                     headers=HEADERS, timeout=12)
+    r4 = d.json()
+    results["fixtures_season_only"] = {"params_used": "league=39&season=2025",
+                                        "count": len(r4.get("response", [])),
+                                        "errors": r4.get("errors", [])}
+
+    # Test 5 : basketball NBA
+    d = requests.get(f"{BASKETBALL_API}/games",
+                     params={"league": "12", "season": "2025-2026", "next": 5},
+                     headers=HEADERS, timeout=12)
+    r5 = d.json()
+    results["basketball_next"] = {"params_used": "league=12&season=2025-2026&next=5",
+                                   "count": len(r5.get("response", [])),
+                                   "errors": r5.get("errors", []),
+                                   "sample": r5.get("response", [])[:1]}
+
+    return jsonify(results)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
