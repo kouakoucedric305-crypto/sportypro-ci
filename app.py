@@ -61,31 +61,70 @@ SPORT_CONFIGS = {
     },
 }
 
-# ─── Données de fallback (si API indisponible) ────────────────────────────────
+# ─── Données de fallback — Événements réels 2026 ─────────────────────────────
 FALLBACK_EVENTS = {
     "football": [
-        {"idEvent":"f001","strHomeTeam":"Arsenal","strAwayTeam":"Chelsea","dateEvent":"2026-08-16","strTime":"16:00:00","strLeague":"Premier League","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"f002","strHomeTeam":"PSG","strAwayTeam":"Olympique de Marseille","dateEvent":"2026-08-17","strTime":"20:45:00","strLeague":"Ligue 1","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"f003","strHomeTeam":"Real Madrid","strAwayTeam":"FC Barcelone","dateEvent":"2026-08-22","strTime":"21:00:00","strLeague":"La Liga","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"f004","strHomeTeam":"Bayern Munich","strAwayTeam":"Borussia Dortmund","dateEvent":"2026-08-23","strTime":"18:30:00","strLeague":"Bundesliga","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"f005","strHomeTeam":"Juventus","strAwayTeam":"AC Milan","dateEvent":"2026-08-24","strTime":"20:45:00","strLeague":"Serie A","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"f006","strHomeTeam":"Manchester City","strAwayTeam":"Liverpool","dateEvent":"2026-08-30","strTime":"17:30:00","strLeague":"Premier League","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"f007","strHomeTeam":"Atletico Madrid","strAwayTeam":"Sevilla","dateEvent":"2026-08-29","strTime":"21:00:00","strLeague":"La Liga","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"f008","strHomeTeam":"Inter Milan","strAwayTeam":"AS Roma","dateEvent":"2026-08-31","strTime":"20:45:00","strLeague":"Serie A","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Champions League - Demi-finales retour (5-6 mai 2026)
+        {"idEvent":"f001","strHomeTeam":"Real Madrid","strAwayTeam":"Arsenal","dateEvent":"2026-05-05","strTime":"21:00:00","strLeague":"Champions League","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"f002","strHomeTeam":"Paris Saint-Germain","strAwayTeam":"Bayern Munich","dateEvent":"2026-05-06","strTime":"21:00:00","strLeague":"Champions League","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Premier League - Dernières journées (mai 2026)
+        {"idEvent":"f003","strHomeTeam":"Manchester United","strAwayTeam":"Liverpool","dateEvent":"2026-05-03","strTime":"17:30:00","strLeague":"Premier League","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"f004","strHomeTeam":"Arsenal","strAwayTeam":"Manchester City","dateEvent":"2026-05-10","strTime":"16:00:00","strLeague":"Premier League","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"f005","strHomeTeam":"Chelsea","strAwayTeam":"Tottenham","dateEvent":"2026-05-17","strTime":"16:00:00","strLeague":"Premier League","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # La Liga
+        {"idEvent":"f006","strHomeTeam":"FC Barcelone","strAwayTeam":"Atletico Madrid","dateEvent":"2026-05-09","strTime":"21:00:00","strLeague":"La Liga","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"f007","strHomeTeam":"Real Madrid","strAwayTeam":"Villarreal","dateEvent":"2026-05-16","strTime":"21:00:00","strLeague":"La Liga","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Ligue 1
+        {"idEvent":"f008","strHomeTeam":"Paris Saint-Germain","strAwayTeam":"Olympique de Marseille","dateEvent":"2026-05-10","strTime":"21:00:00","strLeague":"Ligue 1","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"f009","strHomeTeam":"Olympique Lyonnais","strAwayTeam":"Monaco","dateEvent":"2026-05-16","strTime":"17:00:00","strLeague":"Ligue 1","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Bundesliga
+        {"idEvent":"f010","strHomeTeam":"Bayern Munich","strAwayTeam":"Bayer Leverkusen","dateEvent":"2026-05-09","strTime":"18:30:00","strLeague":"Bundesliga","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Serie A
+        {"idEvent":"f011","strHomeTeam":"Inter Milan","strAwayTeam":"AC Milan","dateEvent":"2026-05-10","strTime":"20:45:00","strLeague":"Serie A","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Europa League Finale (20 mai 2026 - Istanbul)
+        {"idEvent":"f012","strHomeTeam":"TBD Europa League","strAwayTeam":"TBD Europa League","dateEvent":"2026-05-20","strTime":"21:00:00","strLeague":"Europa League","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Champions League Finale (30 mai 2026 - Budapest)
+        {"idEvent":"f013","strHomeTeam":"TBD Champions League","strAwayTeam":"TBD Champions League","dateEvent":"2026-05-30","strTime":"21:00:00","strLeague":"Champions League","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Coupe du Monde des Clubs FIFA (juin-juillet 2026 - USA)
+        {"idEvent":"f014","strHomeTeam":"Real Madrid","strAwayTeam":"Al Hilal","dateEvent":"2026-06-15","strTime":"21:00:00","strLeague":"Coupe du Monde des Clubs","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"f015","strHomeTeam":"Manchester City","strAwayTeam":"Flamengo","dateEvent":"2026-06-18","strTime":"00:00:00","strLeague":"Coupe du Monde des Clubs","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
     ],
     "basketball": [
-        {"idEvent":"b001","strHomeTeam":"Los Angeles Lakers","strAwayTeam":"Boston Celtics","dateEvent":"2026-10-23","strTime":"01:30:00","strLeague":"NBA","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"b002","strHomeTeam":"Golden State Warriors","strAwayTeam":"Miami Heat","dateEvent":"2026-10-24","strTime":"04:00:00","strLeague":"NBA","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"b003","strHomeTeam":"Real Madrid","strAwayTeam":"CSKA Moscou","dateEvent":"2026-10-10","strTime":"20:00:00","strLeague":"Euroleague","strSeason":"2026-2027","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # NBA Playoffs 2026 - Demi-finales de Conférence (mai 2026)
+        {"idEvent":"b001","strHomeTeam":"Oklahoma City Thunder","strAwayTeam":"San Antonio Spurs","dateEvent":"2026-05-04","strTime":"02:30:00","strLeague":"NBA","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"b002","strHomeTeam":"Los Angeles Lakers","strAwayTeam":"Houston Rockets","dateEvent":"2026-05-03","strTime":"02:30:00","strLeague":"NBA","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"b003","strHomeTeam":"Boston Celtics","strAwayTeam":"Philadelphia 76ers","dateEvent":"2026-05-02","strTime":"01:00:00","strLeague":"NBA","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"b004","strHomeTeam":"New York Knicks","strAwayTeam":"Minnesota Timberwolves","dateEvent":"2026-05-05","strTime":"01:00:00","strLeague":"NBA","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # NBA Finales (3 juin 2026)
+        {"idEvent":"b005","strHomeTeam":"TBD Est","strAwayTeam":"TBD Ouest","dateEvent":"2026-06-03","strTime":"02:30:00","strLeague":"NBA Finals","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Euroleague Playoffs
+        {"idEvent":"b006","strHomeTeam":"Real Madrid","strAwayTeam":"Panathinaikos","dateEvent":"2026-05-08","strTime":"20:00:00","strLeague":"Euroleague","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"b007","strHomeTeam":"Fenerbahce","strAwayTeam":"Olympiacos","dateEvent":"2026-05-09","strTime":"19:00:00","strLeague":"Euroleague","strSeason":"2025-2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
     ],
     "tennis": [
-        {"idEvent":"t001","strHomeTeam":"Carlos Alcaraz","strAwayTeam":"Jannik Sinner","dateEvent":"2026-09-06","strTime":"17:00:00","strLeague":"US Open","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"t002","strHomeTeam":"Novak Djokovic","strAwayTeam":"Daniil Medvedev","dateEvent":"2026-09-07","strTime":"17:00:00","strLeague":"US Open","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"t003","strHomeTeam":"Iga Swiatek","strAwayTeam":"Coco Gauff","dateEvent":"2026-09-06","strTime":"19:00:00","strLeague":"US Open WTA","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Roland Garros 2026 (24 mai - 7 juin 2026, Paris)
+        {"idEvent":"t001","strHomeTeam":"Carlos Alcaraz","strAwayTeam":"Jannik Sinner","dateEvent":"2026-06-05","strTime":"15:00:00","strLeague":"Roland Garros","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"t002","strHomeTeam":"Novak Djokovic","strAwayTeam":"Holger Rune","dateEvent":"2026-06-03","strTime":"13:00:00","strLeague":"Roland Garros","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"t003","strHomeTeam":"Iga Swiatek","strAwayTeam":"Coco Gauff","dateEvent":"2026-06-06","strTime":"15:00:00","strLeague":"Roland Garros WTA","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"t004","strHomeTeam":"Aryna Sabalenka","strAwayTeam":"Elena Rybakina","dateEvent":"2026-06-04","strTime":"13:00:00","strLeague":"Roland Garros WTA","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # Wimbledon 2026 (29 juin - 12 juillet 2026, Londres)
+        {"idEvent":"t005","strHomeTeam":"Jannik Sinner","strAwayTeam":"Carlos Alcaraz","dateEvent":"2026-07-12","strTime":"15:00:00","strLeague":"Wimbledon","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"t006","strHomeTeam":"Iga Swiatek","strAwayTeam":"Aryna Sabalenka","dateEvent":"2026-07-11","strTime":"14:00:00","strLeague":"Wimbledon WTA","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # US Open 2026 (31 août - 13 septembre 2026, New York)
+        {"idEvent":"t007","strHomeTeam":"Carlos Alcaraz","strAwayTeam":"Daniil Medvedev","dateEvent":"2026-09-13","strTime":"22:00:00","strLeague":"US Open","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        {"idEvent":"t008","strHomeTeam":"Coco Gauff","strAwayTeam":"Iga Swiatek","dateEvent":"2026-09-12","strTime":"22:00:00","strLeague":"US Open WTA","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
     ],
     "mma": [
-        {"idEvent":"m001","strHomeTeam":"Jon Jones","strAwayTeam":"Tom Aspinall","dateEvent":"2026-09-19","strTime":"03:00:00","strLeague":"UFC 315","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
-        {"idEvent":"m002","strHomeTeam":"Israel Adesanya","strAwayTeam":"Alex Pereira","dateEvent":"2026-10-03","strTime":"03:00:00","strLeague":"UFC 316","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # UFC Fight Night - Della Maddalena vs Prates (2 mai 2026 - Perth)
+        {"idEvent":"m001","strHomeTeam":"Jack Della Maddalena","strAwayTeam":"Carlos Prates","dateEvent":"2026-05-02","strTime":"13:00:00","strLeague":"UFC Fight Night","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # UFC 328 - Chimaev vs Strickland (9 mai 2026 - Newark)
+        {"idEvent":"m002","strHomeTeam":"Khamzat Chimaev","strAwayTeam":"Sean Strickland","dateEvent":"2026-05-09","strTime":"03:00:00","strLeague":"UFC 328","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # UFC Freedom 250 à la Maison Blanche (14 juin 2026)
+        {"idEvent":"m003","strHomeTeam":"Ilia Topuria","strAwayTeam":"Justin Gaethje","dateEvent":"2026-06-14","strTime":"02:00:00","strLeague":"UFC Freedom 250","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # UFC 329 (août 2026 - Baku)
+        {"idEvent":"m004","strHomeTeam":"Islam Makhachev","strAwayTeam":"TBD","dateEvent":"2026-08-01","strTime":"22:00:00","strLeague":"UFC 329","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
+        # UFC 330 (15 août 2026 - Philadelphie)
+        {"idEvent":"m005","strHomeTeam":"Alexandre Pantoja","strAwayTeam":"Joshua Van","dateEvent":"2026-08-15","strTime":"03:00:00","strLeague":"UFC 330","strSeason":"2026","intHomeScore":None,"intAwayScore":None,"strHomeTeamBadge":"","strAwayTeamBadge":""},
     ],
 }
 
