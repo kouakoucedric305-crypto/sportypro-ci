@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}{{ sport_cfg.name }} — Pronostics & Calendrier 2026/2027 · SportyPro CI{% endblock %}
+{% block content %}
+
+<section class="sport-hero" style="--sport-color: {{ sport_cfg.color }}">
+  <div class="container">
+    <div class="sport-hero-inner">
+      <div class="sport-hero-icon">{{ sport_cfg.icon }}</div>
+      <div>
+        <h1>{{ sport_cfg.name }} <span class="accent">2026/2027</span></h1>
+        <p>Calendrier réel · Pronostics · Cotes des bookmakers</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if leagues_data %}
+      {% for ld in leagues_data %}
+      <div class="league-block">
+        <div class="league-header">
+          <h2>{{ ld.league.country }} — {{ ld.league.name }}</h2>
+          <span class="match-count">{{ ld.events|length }} matchs</span>
+        </div>
+
+        {% if ld.events %}
+        <div class="matches-table">
+          <div class="table-header">
+            <span>Date</span>
+            <span>Match</span>
+            <span>1</span>
+            <span>N</span>
+            <span>2</span>
+            <span>Pronostic</span>
+            <span></span>
+          </div>
+          {% for ev in ld.events %}
+          <div class="table-row">
+            <span class="td-date">
+              {% if ev.dateEvent %}{{ ev.dateEvent | format_date }}{% else %}—{% endif %}
+              {% if ev.strTime %}<br><small>{{ ev.strTime[:5] }}</small>{% endif %}
+            </span>
+            <span class="td-match">
+              <div class="inline-teams">
+                {% if ev.strHomeTeamBadge %}
+                <img src="{{ ev.strHomeTeamBadge }}" class="sm-badge" onerror="this.style.display='none'">
+                {% endif %}
+                <strong>{{ ev.strHomeTeam or '—' }}</strong>
+                <span class="vs-mini">vs</span>
+                {% if ev.strAwayTeamBadge %}
+                <img src="{{ ev.strAwayTeamBadge }}" class="sm-badge" onerror="this.style.display='none'">
+                {% endif %}
+                <strong>{{ ev.strAwayTeam or '—' }}</strong>
+              </div>
+            </span>
+            <span class="td-odd cote1">{{ ev.cote_1 }}</span>
+            <span class="td-odd coten">{{ ev.cote_n }}</span>
+            <span class="td-odd cote2">{{ ev.cote_2 }}</span>
+            <span class="td-prono">
+              <span class="mini-badge" style="background:{{ sport_cfg.color }}22;color:{{ sport_cfg.color }}">
+                {{ ev.pronostic.split('(')[0].strip() }}
+              </span>
+            </span>
+            <span class="td-action">
+              <a href="/match/{{ ev.idEvent }}?sport={{ sport_key }}" class="btn-sm">Voir →</a>
+            </span>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+          <p>Aucun match programmé pour cette ligue actuellement. Revenez bientôt !</p>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    {% else %}
+    <div class="empty-state">
+      <p>⏳ Données non disponibles. Vérifiez votre connexion internet.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

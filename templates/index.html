@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}SportyPro CI — Pronostics Sportifs Gratuits 2026/2027{% endblock %}
+{% block content %}
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">⚡ Saison 2026/2027 en cours</div>
+      <h1>Les meilleurs <span class="accent">pronostics sportifs</span> gratuits</h1>
+      <p>Football · Basketball · Tennis · MMA — Calendrier réel, cotes live, analyses d'experts</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">{{ events|length }}+</span><span>Matchs à venir</span></div>
+        <div class="stat"><span class="stat-num">4</span><span>Sports couverts</span></div>
+        <div class="stat"><span class="stat-num">100%</span><span>Gratuit</span></div>
+      </div>
+      <div class="hero-cta">
+        <a href="/pronostics" class="btn btn-primary">📊 Voir tous les pronostics</a>
+        <a href="/sport/football" class="btn btn-outline">⚽ Football</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SPORT TABS ── -->
+<section class="section">
+  <div class="container">
+    <div class="sport-tabs">
+      {% for sport_key, sport_cfg in sport_configs.items() %}
+      <a href="/sport/{{ sport_key }}" class="sport-tab">
+        <span class="tab-icon">{{ sport_cfg.icon }}</span>
+        <span>{{ sport_cfg.name }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── MATCHES DU JOUR ── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>🔥 Prochains matchs — Calendrier 2026/2027</h2>
+      <a href="/pronostics" class="see-all">Tout voir →</a>
+    </div>
+
+    {% if events %}
+    <div class="matches-grid">
+      {% for ev in events %}
+      {% set sport_cfg = sport_configs.get(ev.sport, {}) %}
+      <div class="match-card" data-sport="{{ ev.sport }}">
+        <div class="match-card-header">
+          <div class="match-sport-badge" style="background: {{ sport_cfg.color or '#00e676' }}22; color: {{ sport_cfg.color or '#00e676' }};">
+            {{ sport_cfg.icon or '🏅' }} {{ ev.league_name }}
+          </div>
+          <div class="match-date">
+            {% if ev.dateEvent %}{{ ev.dateEvent | format_date }}{% else %}—{% endif %}
+            {% if ev.strTime %}· {{ ev.strTime[:5] }}{% endif %}
+          </div>
+        </div>
+
+        <div class="match-teams">
+          <div class="team home">
+            {% if ev.strHomeTeamBadge %}
+            <img src="{{ ev.strHomeTeamBadge }}" alt="{{ ev.strHomeTeam }}" class="team-badge" onerror="this.style.display='none'">
+            {% endif %}
+            <span class="team-name">{{ ev.strHomeTeam or '—' }}</span>
+          </div>
+          <div class="match-vs">
+            <span class="vs-text">VS</span>
+            {% if ev.intHomeScore is not none and ev.intAwayScore is not none %}
+            <span class="score">{{ ev.intHomeScore }} - {{ ev.intAwayScore }}</span>
+            {% endif %}
+          </div>
+          <div class="team away">
+            {% if ev.strAwayTeamBadge %}
+            <img src="{{ ev.strAwayTeamBadge }}" alt="{{ ev.strAwayTeam }}" class="team-badge" onerror="this.style.display='none'">
+            {% endif %}
+            <span class="team-name">{{ ev.strAwayTeam or '—' }}</span>
+          </div>
+        </div>
+
+        <div class="match-odds">
+          <div class="odd"><span class="odd-label">1</span><span class="odd-val">{{ ev.cote_1 }}</span></div>
+          <div class="odd"><span class="odd-label">N</span><span class="odd-val">{{ ev.cote_n }}</span></div>
+          <div class="odd"><span class="odd-label">2</span><span class="odd-val">{{ ev.cote_2 }}</span></div>
+        </div>
+
+        <div class="match-prono">
+          <span class="prono-badge">🎯 {{ ev.pronostic }}</span>
+          <span class="fiabilite">{{ ev.fiabilite }}</span>
+        </div>
+
+        <a href="/match/{{ ev.idEvent }}?sport={{ ev.sport }}" class="btn-match-detail">
+          Analyse complète →
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <p>⏳ Chargement des matchs en cours… Vérifiez votre connexion.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ── POURQUOI NOUS ── -->
+<section class="section section-dark">
+  <div class="container">
+    <h2 class="text-center">Pourquoi choisir SportyPro CI ?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Calendrier réel</h3>
+        <p>Tous les matchs officiels de la saison 2026/2027 via des APIs sportives en temps réel.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Pronostics experts</h3>
+        <p>Analyses détaillées avec cotes, types de paris recommandés et niveau de fiabilité.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚽🏀🎾🥊</div>
+        <h3>Multi-sports</h3>
+        <p>Football, Basketball, Tennis ATP/WTA, MMA/UFC — tous les sports dans un seul site.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💯</div>
+        <h3>100% Gratuit</h3>
+        <p>Aucun abonnement. Tous les pronostics sont accessibles gratuitement pour tous.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

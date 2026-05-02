@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Tous les Pronostics — SportyPro CI{% endblock %}
+{% block content %}
+
+<section class="section-hero-simple">
+  <div class="container">
+    <h1>📊 Tous les Pronostics</h1>
+    <p>Calendrier réel · Saison 2026/2027 · Football, Basketball, Tennis, MMA</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <!-- Filtres sport -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">Tous</button>
+      {% for sport_key, sport_cfg in sport_configs.items() %}
+      <button class="filter-btn" data-filter="{{ sport_key }}">{{ sport_cfg.icon }} {{ sport_cfg.name }}</button>
+      {% endfor %}
+    </div>
+
+    {% if events %}
+    <div class="prono-list" id="pronoList">
+      {% for ev in events %}
+      {% set sport_cfg = sport_configs.get(ev.sport, {}) %}
+      <div class="prono-row" data-sport="{{ ev.sport }}">
+        <div class="pr-sport">
+          <span style="color: {{ sport_cfg.color or '#00e676' }}">{{ sport_cfg.icon or '🏅' }}</span>
+          <span class="pr-league">{{ ev.league_name }}</span>
+        </div>
+        <div class="pr-date">
+          {% if ev.dateEvent %}{{ ev.dateEvent | format_date }}{% else %}—{% endif %}
+          {% if ev.strTime %} · {{ ev.strTime[:5] }}{% endif %}
+        </div>
+        <div class="pr-match">
+          <strong>{{ ev.strHomeTeam or '—' }}</strong>
+          <span class="pr-vs">vs</span>
+          <strong>{{ ev.strAwayTeam or '—' }}</strong>
+        </div>
+        <div class="pr-odds">
+          <span class="pr-odd">1: <b>{{ ev.cote_1 }}</b></span>
+          <span class="pr-odd">N: <b>{{ ev.cote_n }}</b></span>
+          <span class="pr-odd">2: <b>{{ ev.cote_2 }}</b></span>
+        </div>
+        <div class="pr-prono">
+          <span class="prono-chip" style="background:{{ sport_cfg.color or '#00e676' }}22;color:{{ sport_cfg.color or '#00e676' }}">
+            🎯 {{ ev.pronostic.split('(')[0].strip() }}
+          </span>
+        </div>
+        <div class="pr-fiab">{{ ev.fiabilite }}</div>
+        <div class="pr-action">
+          <a href="/match/{{ ev.idEvent }}?sport={{ ev.sport }}" class="btn-sm">Analyse →</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <p>⏳ Chargement des pronostics...</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}
+{% block extra_js %}
+<script>
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.prono-row').forEach(row => {
+      row.style.display = (filter === 'all' || row.dataset.sport === filter) ? '' : 'none';
+    });
+  });
+});
+</script>
+{% endblock %}

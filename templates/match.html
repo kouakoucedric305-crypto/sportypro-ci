@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}{{ event.strHomeTeam }} vs {{ event.strAwayTeam }} — Analyse · SportyPro CI{% endblock %}
+{% block content %}
+
+<section class="section">
+  <div class="container">
+    <a href="javascript:history.back()" class="back-link">← Retour</a>
+
+    <div class="match-detail-card">
+      <div class="match-detail-header" style="--sport-color: {{ sport_cfg.color }}">
+        <div class="detail-league">
+          {{ sport_cfg.icon }} {{ event.strLeague or '—' }}
+          {% if event.dateEvent %} · {{ event.dateEvent | format_date }}{% endif %}
+          {% if event.strTime %} à {{ event.strTime[:5] }}{% endif %}
+        </div>
+
+        <div class="detail-teams">
+          <div class="detail-team">
+            {% if event.strHomeTeamBadge %}
+            <img src="{{ event.strHomeTeamBadge }}" alt="{{ event.strHomeTeam }}" class="detail-badge" onerror="this.style.display='none'">
+            {% endif %}
+            <h2>{{ event.strHomeTeam or '—' }}</h2>
+            <span class="home-away-label">Domicile</span>
+          </div>
+
+          <div class="detail-vs">
+            {% if event.intHomeScore is not none %}
+            <div class="big-score">{{ event.intHomeScore }} — {{ event.intAwayScore }}</div>
+            {% else %}
+            <div class="big-vs">VS</div>
+            <div class="kickoff">{{ event.strTime[:5] if event.strTime else '' }}</div>
+            {% endif %}
+          </div>
+
+          <div class="detail-team">
+            {% if event.strAwayTeamBadge %}
+            <img src="{{ event.strAwayTeamBadge }}" alt="{{ event.strAwayTeam }}" class="detail-badge" onerror="this.style.display='none'">
+            {% endif %}
+            <h2>{{ event.strAwayTeam or '—' }}</h2>
+            <span class="home-away-label">Extérieur</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COTES -->
+      <div class="detail-odds-section">
+        <h3>📈 Cotes du match</h3>
+        <div class="detail-odds">
+          <div class="detail-odd active">
+            <span class="do-label">1 — Victoire {{ event.strHomeTeam or 'Domicile' }}</span>
+            <span class="do-val">{{ event.cote_1 }}</span>
+            <span class="do-bk">{{ event.bookmaker }}</span>
+          </div>
+          <div class="detail-odd">
+            <span class="do-label">N — Match nul</span>
+            <span class="do-val">{{ event.cote_n }}</span>
+            <span class="do-bk">{{ event.bookmaker }}</span>
+          </div>
+          <div class="detail-odd">
+            <span class="do-label">2 — Victoire {{ event.strAwayTeam or 'Extérieur' }}</span>
+            <span class="do-val">{{ event.cote_2 }}</span>
+            <span class="do-bk">{{ event.bookmaker }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRONOSTIC -->
+      <div class="detail-prono-section">
+        <h3>🎯 Notre pronostic</h3>
+        <div class="prono-box" style="border-color: {{ sport_cfg.color }}">
+          <div class="prono-main">
+            <span class="prono-label">Pronostic recommandé</span>
+            <span class="prono-value" style="color: {{ sport_cfg.color }}">{{ event.pronostic }}</span>
+          </div>
+          <div class="prono-meta">
+            <div><span>Fiabilité</span><strong>{{ event.fiabilite }}</strong></div>
+            <div><span>Bookmaker conseillé</span><strong>{{ event.bookmaker }}</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYSE -->
+      <div class="detail-analysis">
+        <h3>📝 Analyse du match</h3>
+        <div class="analysis-text">
+          <p>Ce match oppose <strong>{{ event.strHomeTeam or '—' }}</strong> à <strong>{{ event.strAwayTeam or '—' }}</strong> dans le cadre de <strong>{{ event.strLeague or 'la compétition' }}</strong>. Sur la base des statistiques de la saison 2026/2027, notre analyse penche en faveur du pronostic <strong>{{ event.pronostic }}</strong>.</p>
+          <p>Les cotes proposées par <strong>{{ event.bookmaker }}</strong> reflètent les probabilités suivantes : <strong>{{ event.strHomeTeam }}</strong> à {{ event.cote_1 }}, match nul à {{ event.cote_n }}, et <strong>{{ event.strAwayTeam }}</strong> à {{ event.cote_2 }}.</p>
+          <div class="analysis-warning">⚠️ <em>Les pronostics sont fournis à titre informatif uniquement. Les paris sportifs comportent des risques financiers. Jouez de façon responsable.</em></div>
+        </div>
+      </div>
+
+      <!-- INFOS MATCH -->
+      {% if event.strVenue or event.strCountry %}
+      <div class="detail-info">
+        <h3>ℹ️ Informations</h3>
+        <div class="info-grid">
+          {% if event.strVenue %}<div><span>Stade</span><strong>{{ event.strVenue }}</strong></div>{% endif %}
+          {% if event.strCountry %}<div><span>Pays</span><strong>{{ event.strCountry }}</strong></div>{% endif %}
+          {% if event.strSeason %}<div><span>Saison</span><strong>{{ event.strSeason }}</strong></div>{% endif %}
+          {% if event.intRound %}<div><span>Journée</span><strong>{{ event.intRound }}</strong></div>{% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

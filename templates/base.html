@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}SportyPro CI — Pronostics Sportifs{% endblock %}</title>
+  <meta name="description" content="Pronostics sportifs gratuits — Football, Basketball, Tennis, MMA. Analyses et cotes en temps réel.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <!-- ───── HEADER ───── -->
+  <header class="site-header">
+    <div class="header-top">
+      <div class="container">
+        <div class="header-top-inner">
+          <span class="live-badge"><span class="pulse"></span> LIVE</span>
+          <span class="tagline">🏆 Pronostics gratuits · Saison 2026/2027</span>
+          <span class="credit">Par <strong>Kouakou Cedric</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-main">
+      <div class="container">
+        <div class="header-inner">
+          <a href="/" class="logo">
+            <span class="logo-icon">⚡</span>
+            <span class="logo-text">Sporty<span class="accent">Pro</span></span>
+            <span class="logo-sub">CI</span>
+          </a>
+          <nav class="main-nav">
+            <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">🏠 Accueil</a>
+            {% for sport_key, sport_cfg in sport_configs.items() %}
+            <a href="/sport/{{ sport_key }}" class="nav-link {% if request.path == '/sport/' ~ sport_key %}active{% endif %}">
+              {{ sport_cfg.icon }} {{ sport_cfg.name }}
+            </a>
+            {% endfor %}
+            <a href="/pronostics" class="nav-link nav-cta {% if request.path == '/pronostics' %}active{% endif %}">📊 Pronostics</a>
+            <a href="/resultats" class="nav-link {% if request.path == '/resultats' %}active{% endif %}">📋 Résultats</a>
+          </nav>
+          <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="/">🏠 Accueil</a>
+    {% for sport_key, sport_cfg in sport_configs.items() %}
+    <a href="/sport/{{ sport_key }}">{{ sport_cfg.icon }} {{ sport_cfg.name }}</a>
+    {% endfor %}
+    <a href="/pronostics">📊 Pronostics</a>
+    <a href="/resultats">📋 Résultats</a>
+  </div>
+
+  <!-- ───── MAIN ───── -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ───── FOOTER ───── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">⚡ SportyPro CI</div>
+          <p>La référence des pronostics sportifs en Côte d'Ivoire et en Afrique francophone. Analyses gratuites par des experts.</p>
+          <p class="footer-credit">Créé par <strong>Kouakou Cedric</strong> · 2026</p>
+        </div>
+        <div class="footer-col">
+          <h4>Sports</h4>
+          {% for sport_key, sport_cfg in sport_configs.items() %}
+          <a href="/sport/{{ sport_key }}">{{ sport_cfg.icon }} {{ sport_cfg.name }}</a>
+          {% endfor %}
+        </div>
+        <div class="footer-col">
+          <h4>Liens utiles</h4>
+          <a href="/pronostics">📊 Tous les pronostics</a>
+          <a href="/resultats">📋 Résultats</a>
+        </div>
+        <div class="footer-col">
+          <h4>⚠️ Jeu responsable</h4>
+          <p class="warning-text">Les jeux d'argent comportent des risques. Les pronostics sont informatifs, pas des garanties. Jouez de façon responsable. Interdit aux moins de 18 ans.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 SportyPro CI · Développé par <strong>Kouakou Cedric</strong> · Données : TheSportsDB</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

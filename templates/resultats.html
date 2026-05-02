@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Résultats — SportyPro CI{% endblock %}
+{% block content %}
+
+<section class="section-hero-simple">
+  <div class="container">
+    <h1>📋 Résultats récents</h1>
+    <p>Derniers résultats officiels — Football, Basketball, Tennis, MMA</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">Tous</button>
+      {% for sport_key, sport_cfg in sport_configs.items() %}
+      <button class="filter-btn" data-filter="{{ sport_key }}">{{ sport_cfg.icon }} {{ sport_cfg.name }}</button>
+      {% endfor %}
+    </div>
+
+    {% if events %}
+    <div class="prono-list" id="pronoList">
+      {% for ev in events %}
+      {% set sport_cfg = sport_configs.get(ev.sport, {}) %}
+      <div class="prono-row result-row" data-sport="{{ ev.sport }}">
+        <div class="pr-sport">
+          <span style="color: {{ sport_cfg.color or '#00e676' }}">{{ sport_cfg.icon or '🏅' }}</span>
+          <span class="pr-league">{{ ev.league_name }}</span>
+        </div>
+        <div class="pr-date">
+          {% if ev.dateEvent %}{{ ev.dateEvent | format_date }}{% else %}—{% endif %}
+        </div>
+        <div class="pr-match">
+          <strong>{{ ev.strHomeTeam or '—' }}</strong>
+          <span class="pr-score">
+            {% if ev.intHomeScore is not none %}
+              {{ ev.intHomeScore }} — {{ ev.intAwayScore }}
+            {% else %}
+              vs
+            {% endif %}
+          </span>
+          <strong>{{ ev.strAwayTeam or '—' }}</strong>
+        </div>
+        <div class="pr-action">
+          <a href="/match/{{ ev.idEvent }}?sport={{ ev.sport }}" class="btn-sm">Détails →</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <p>⏳ Chargement des résultats...</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}
+{% block extra_js %}
+<script>
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.prono-row').forEach(row => {
+      row.style.display = (filter === 'all' || row.dataset.sport === filter) ? '' : 'none';
+    });
+  });
+});
+</script>
+{% endblock %}
