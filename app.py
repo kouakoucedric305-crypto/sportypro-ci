@@ -256,19 +256,8 @@ app.jinja_env.filters["format_date"] = format_date
 # ─── Routes ──────────────────────────────────────────────────────────────────
 
 @app.route("/")
+@app.route("/")
 def index():
-    all_events = []
-    for league in SPORT_CONFIGS["football"]["leagues"][:2]:
-        for ev in get_next_events("football", league, n=3)[:3]:
-            all_events.append(enrich_event(ev, league["name"], "football"))
-    nba = SPORT_CONFIGS["basketball"]["leagues"][0]
-    for ev in get_next_events("basketball", nba, n=3)[:3]:
-        all_events.append(enrich_event(ev, nba["name"], "basketball"))
-    for sport_key in ("tennis", "mma"):
-        for ev in FALLBACK_EVENTS.get(sport_key, [])[:2]:
-            all_events.append(enrich_event(ev, ev.get("strLeague", ""), sport_key))
-    random.shuffle(all_events)
-    live = any(e.get("isLive") for e in all_events)
     return render_template_string(HTML)
 
 @app.route("/sport/<sport_key>")
