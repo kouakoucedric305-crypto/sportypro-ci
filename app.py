@@ -269,9 +269,7 @@ def index():
             all_events.append(enrich_event(ev, ev.get("strLeague", ""), sport_key))
     random.shuffle(all_events)
     live = any(e.get("isLive") for e in all_events)
-    return render_template_string("index.html", events=all_events[:20],
-                           sport_configs=SPORT_CONFIGS, now=datetime.now(),
-                           has_live=live)
+    return render_template_string(HTML)
 
 @app.route("/sport/<sport_key>")
 def sport_page(sport_key):
