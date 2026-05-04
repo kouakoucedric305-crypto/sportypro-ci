@@ -96,5 +96,9 @@
 
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   {% block extra_js %}{% endblock %}
-</body>
+{% if show_cgu is defined and show_cgu %}
+      {% include "cgu_popup.html" %}
+    {% endif %}
+
+    </body>
 </html>

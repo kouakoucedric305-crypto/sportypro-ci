@@ -1,0 +1,67 @@
+{# ─── Popup CGU — à inclure dans base.html avant </body> ─────────────────────
+   Usage dans base.html :
+     {% if show_cgu is defined and show_cgu %}
+       {% include "cgu_popup.html" %}
+     {% endif %}
+#}
+<div id="cgu-overlay" style="
+  position:fixed; inset:0; background:rgba(0,0,0,0.82);
+  z-index:9999; display:flex; align-items:center; justify-content:center;
+  padding:1rem;">
+  <div style="
+    background:#1a1a2e; border:1px solid rgba(0,230,118,0.3);
+    border-radius:16px; max-width:520px; width:100%; padding:2rem;
+    box-shadow:0 8px 40px rgba(0,0,0,0.6);">
+
+    <div style="text-align:center; margin-bottom:1.5rem;">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">⚽🏀</div>
+      <h2 style="font-size:1.3rem; font-weight:700; color:#fff; margin:0 0 0.4rem;">
+        Bienvenue sur SportyPro CI
+      </h2>
+      <p style="color:#aaa; font-size:0.9rem; margin:0;">
+        Avant de continuer, veuillez lire et accepter nos conditions.
+      </p>
+    </div>
+
+    <div style="
+      background:rgba(255,193,7,0.1); border:1px solid rgba(255,193,7,0.25);
+      border-radius:8px; padding:1rem; margin-bottom:1.25rem;">
+      <p style="color:#FFC107; font-weight:600; margin:0 0 0.5rem; font-size:0.9rem;">
+        ⚠️ Avertissement jeu responsable
+      </p>
+      <ul style="color:#ccc; font-size:0.85rem; line-height:1.6; margin:0; padding-left:1.2rem;">
+        <li>Réservé aux personnes <strong style="color:#fff;">majeures (+18 ans)</strong></li>
+        <li>Les pronostics sont indicatifs — aucun gain n'est garanti</li>
+        <li>Ne pariez jamais plus que ce que vous pouvez perdre</li>
+        <li>En cas de dépendance : <strong style="color:#fff;">Joueurs Info Service 09 74 75 13 13</strong></li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom:1.25rem; font-size:0.85rem; color:#aaa; line-height:1.6;">
+      En continuant, vous confirmez avoir <strong style="color:#fff;">+18 ans</strong>
+      et acceptez nos
+      <a href="/cgu" style="color:#00e676; text-decoration:underline;"
+         target="_blank">Conditions Générales d'Utilisation</a>.
+      Aucune donnée personnelle n'est collectée.
+    </div>
+
+    <div style="display:flex; gap:12px;">
+      <form action="/accept-cgu" method="POST" style="flex:1;">
+        <button type="submit" style="
+          width:100%; background:#00e676; color:#000; border:none;
+          padding:0.85rem; border-radius:8px; font-weight:700;
+          font-size:0.95rem; cursor:pointer;">
+          ✅ J'accepte — Continuer
+        </button>
+      </form>
+      <a href="/cgu" style="
+        flex:0.6; display:flex; align-items:center; justify-content:center;
+        background:transparent; border:1px solid rgba(255,255,255,0.2);
+        color:#ccc; border-radius:8px; padding:0.85rem; font-size:0.85rem;
+        text-decoration:none; text-align:center;">
+        Lire les CGU
+      </a>
+    </div>
+
+  </div>
+</div>

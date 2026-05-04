@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Conditions Générales d'Utilisation — SportyPro CI{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:860px; margin:0 auto; padding:2rem 1rem;">
+
+  <h1 style="font-size:1.8rem; font-weight:700; margin-bottom:0.5rem;">
+    📋 Conditions Générales d'Utilisation
+  </h1>
+  <p style="color:var(--text-muted, #aaa); margin-bottom:2rem;">
+    Dernière mise à jour : {{ now.strftime('%d/%m/%Y') }} — SportyPro CI by Kouakou Cedric
+  </p>
+
+  <div class="cgu-section">
+    <h2>1. Objet du site</h2>
+    <p>
+      SportyPro CI est un site de pronostics sportifs à titre purement informatif et récréatif.
+      Les pronostics publiés sont générés automatiquement à partir de données statistiques
+      (classements, bilans, forme des équipes) et ne constituent en aucun cas des conseils financiers
+      ou des garanties de gains.
+    </p>
+  </div>
+
+  <div class="cgu-section">
+    <h2>2. Avertissement jeu responsable</h2>
+    <div class="warning-box">
+      <p><strong>⚠️ Les jeux d'argent comportent des risques.</strong></p>
+      <ul>
+        <li>Ce site est strictement réservé aux personnes majeures (<strong>+18 ans</strong>).</li>
+        <li>Les pronostics sportifs ne garantissent aucun gain. Aucun pari ne peut être sûr à 100%.</li>
+        <li>Ne pariez jamais plus que ce que vous pouvez vous permettre de perdre.</li>
+        <li>Si vous pensez avoir un problème de jeu, contactez <strong>Joueurs Info Service</strong>
+            au <strong>09 74 75 13 13</strong> (France) ou un service équivalent dans votre pays.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cgu-section">
+    <h2>3. Utilisation des données</h2>
+    <p>
+      Les données utilisées proviennent de sources publiques :
+      <strong>football-data.org</strong> (football) et <strong>BallDontLie API</strong> (NBA).
+      SportyPro CI ne collecte aucune donnée personnelle des utilisateurs et ne dépose aucun cookie
+      de traçage, à l'exception du cookie d'acceptation des présentes CGU.
+    </p>
+  </div>
+
+  <div class="cgu-section">
+    <h2>4. Limitation de responsabilité</h2>
+    <p>
+      SportyPro CI, ses créateurs et contributeurs ne sauraient être tenus responsables
+      de toute perte financière découlant de l'utilisation des pronostics publiés.
+      L'utilisateur est seul responsable de ses décisions de paris.
+    </p>
+  </div>
+
+  <div class="cgu-section">
+    <h2>5. Propriété intellectuelle</h2>
+    <p>
+      Le contenu éditorial du site (textes, design, code) est la propriété de Kouakou Cedric.
+      Les données sportives appartiennent à leurs sources respectives.
+    </p>
+  </div>
+
+  <div class="cgu-section">
+    <h2>6. Modification des CGU</h2>
+    <p>
+      SportyPro CI se réserve le droit de modifier les présentes CGU à tout moment.
+      La date de mise à jour en haut de cette page fait foi.
+    </p>
+  </div>
+
+  <div style="margin-top:3rem; text-align:center;">
+    <form action="/accept-cgu" method="POST">
+      <button type="submit" class="btn-accept">
+        ✅ J'ai lu et j'accepte les Conditions Générales d'Utilisation
+      </button>
+    </form>
+    <p style="margin-top:1rem; font-size:0.85rem; color:var(--text-muted, #aaa);">
+      En cliquant, vous confirmez avoir <strong>+18 ans</strong> et acceptez les CGU.
+    </p>
+  </div>
+
+</div>
+
+<style>
+.cgu-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.cgu-section h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--primary, #00e676);
+}
+.cgu-section p, .cgu-section li {
+  line-height: 1.7;
+  color: var(--text-secondary, #ccc);
+  margin-bottom: 0.5rem;
+}
+.cgu-section ul {
+  padding-left: 1.5rem;
+}
+.warning-box {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+.warning-box strong {
+  color: #FFC107;
+}
+.btn-accept {
+  background: var(--primary, #00e676);
+  color: #000;
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-accept:hover {
+  opacity: 0.85;
+}
+</style>
+{% endblock %}
